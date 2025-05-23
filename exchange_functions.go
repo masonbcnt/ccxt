@@ -45,7 +45,6 @@ func (this *Exchange) Keysort(parameters2 interface{}) map[string]interface{} {
 // 	return this.OmitMap(a, keys)
 // }
 
-
 func (this *Exchange) Omit(a interface{}, parameters ...interface{}) interface{} {
 	if len(parameters) == 1 {
 		// Handle single argument which could be a slice of various types
@@ -64,9 +63,7 @@ func (this *Exchange) Omit(a interface{}, parameters ...interface{}) interface{}
 
 	// Handle variadic parameters as individual keys
 	keys := make([]interface{}, len(parameters))
-	for i, parameter := range parameters {
-		keys[i] = parameter
-	}
+	copy(keys, parameters)
 	return this.OmitMap(a, keys)
 }
 
@@ -84,7 +81,6 @@ func (this *Exchange) OmitMap(aa interface{}, k interface{}) interface{} {
 	case []interface{}, []string, []bool, []int, []int64, []float64, []map[string]interface{}:
 		return aa
 	}
-
 
 	var keys []interface{}
 	switch k.(type) {

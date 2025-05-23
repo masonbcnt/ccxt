@@ -107,7 +107,7 @@ func EvalTruthy(val interface{}) bool {
 		// }
 	}
 
-	return true // Consider non-nil complex types as truthy
+	// Consider non-nil complex types as truthy
 }
 
 // func IsInteger(value interface{}) bool {
@@ -2472,7 +2472,7 @@ func CallInternalMethod(methodCache *sync.Map, itf interface{}, name2 string, ar
 			}
 		}()
 
-		cacheKey := fmt.Sprintf("%s", name)
+		cacheKey := name
 		cachedMethod, found := methodCache.Load(cacheKey)
 
 		if !found {

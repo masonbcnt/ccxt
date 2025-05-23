@@ -132,7 +132,7 @@ type Exchange struct {
 
 	Twofa interface{}
 
-	//WS
+	// WS
 	Ohlcvs     interface{}
 	Trades     interface{}
 	Tickers    interface{}
@@ -151,24 +151,28 @@ type Exchange struct {
 	IsSandboxModeEnabled bool
 }
 
-const DECIMAL_PLACES int = 2
-const SIGNIFICANT_DIGITS int = 3
-const TICK_SIZE int = 4
+const (
+	DECIMAL_PLACES     int = 2
+	SIGNIFICANT_DIGITS int = 3
+	TICK_SIZE          int = 4
+)
 
 const TRUNCATE int = 0
 
-const NO_PADDING = 5
-const PAD_WITH_ZERO int = 6
+const (
+	NO_PADDING        = 5
+	PAD_WITH_ZERO int = 6
+)
 
 // var ROUND int = 0
 
 func (this *Exchange) InitParent(userConfig map[string]interface{}, exchangeConfig map[string]interface{}, itf interface{}) {
 	// this = &Exchange{}
-	var describeValues = this.Describe()
+	describeValues := this.Describe()
 	if userConfig == nil {
 		userConfig = map[string]interface{}{}
 	}
-	var extendedProperties = this.DeepExtend(describeValues, exchangeConfig)
+	extendedProperties := this.DeepExtend(describeValues, exchangeConfig)
 	extendedProperties = this.DeepExtend(extendedProperties, userConfig)
 	this.Itf = itf
 	// this.id = SafeString(extendedProperties, "id", "").(string)
@@ -223,7 +227,7 @@ func (this *Exchange) WarmUpCache() {
 	for i := 0; i < baseType.NumMethod(); i++ {
 		method := baseType.Method(i)
 		name := method.Name
-		cacheKey := fmt.Sprintf("%s", name)
+		cacheKey := name
 
 		methodValue := baseValue.MethodByName(name)
 		methodType := method.Type
@@ -271,7 +275,7 @@ func (this *Exchange) LoadMarkets(params ...interface{}) <-chan interface{} {
 		}
 
 		var currencies interface{} = nil
-		var defaultParams = map[string]interface{}{}
+		defaultParams := map[string]interface{}{}
 		hasFetchCurrencies := this.Has["fetchCurrencies"]
 		if IsBool(hasFetchCurrencies) && IsTrue(hasFetchCurrencies) {
 			currencies = <-this.DerivedExchange.FetchCurrencies(defaultParams)
@@ -372,7 +376,7 @@ func Unique(obj interface{}) []string {
 
 func (this *Exchange) Log(args ...interface{}) {
 	// convert to str and print
-	fmt.Println(args)
+	fmt.Println(args...)
 }
 
 func (this *Exchange) callEndpoint(endpoint2 interface{}, parameters interface{}) <-chan interface{} {
@@ -1115,6 +1119,7 @@ func (this *Exchange) GetZKContractSignatureObj(seed interface{}, params interfa
 	}()
 	return ch
 }
+
 func (this *Exchange) GetZKTransferSignatureObj(seed interface{}, params interface{}) <-chan interface{} {
 	ch := make(chan interface{})
 

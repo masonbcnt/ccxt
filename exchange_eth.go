@@ -262,7 +262,7 @@ func DeepExtend(objs ...interface{}) map[string]interface{} { //tmp duplicated i
 				outObj = make(map[string]interface{})
 			}
 			dictX := x.(map[string]interface{})
-			for k, _ := range dictX {
+			for k := range dictX {
 				arg1 := outObj.(map[string]interface{})[k]
 				arg2 := dictX[k]
 				if arg1 != nil && arg2 != nil && reflect.TypeOf(arg1).Kind() == reflect.Map && reflect.TypeOf(arg2).Kind() == reflect.Map {

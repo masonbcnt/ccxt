@@ -47,18 +47,17 @@ func (this *Exchange) Fetch(url interface{}, method interface{}, headers interfa
 
 		if this.Verbose {
 			fmt.Println("Headers:", headersMap)
-			fmt.Println("\n\n")
+			fmt.Printf("\n\n")
 			fmt.Printf("Request: %s %s\n", methodStr, urlStr)
-			fmt.Println("\n\n")
+			fmt.Printf("\n\n")
 			fmt.Printf("Body: %v\n", body)
-			fmt.Println("\n\n")
+			fmt.Printf("\n\n")
 		}
 
 		headersStrMap := make(map[string]string)
 		for k, v := range headersMap {
 			headersStrMap[k] = fmt.Sprintf("%v", v)
 		}
-
 
 		// Marshal the body to JSON if not nil
 		// var requestBody []byte
@@ -89,22 +88,22 @@ func (this *Exchange) Fetch(url interface{}, method interface{}, headers interfa
 				// }
 				req, err = http.NewRequest(methodStr, urlStr, strings.NewReader(v))
 				if err != nil {
-					panic(fmt.Sprintf("error creating request"))
+					panic("error creating request")
 				}
 			default:
 				requestBody, err := json.Marshal(body)
 				if err != nil {
-					panic(fmt.Sprintf("error marshalling JSON"))
+					panic("error marshalling JSON")
 				}
 				req, err = http.NewRequest(methodStr, urlStr, bytes.NewBuffer(requestBody))
 				if err != nil {
-					panic(fmt.Sprintf("error creating request"))
+					panic("error creating request")
 				}
 			}
 		} else {
 			req, err = http.NewRequest(methodStr, urlStr, nil)
 			if err != nil {
-				panic(fmt.Sprintf("error creating request"))
+				panic("error creating request")
 			}
 		}
 		// Create the HTTP request
@@ -113,7 +112,7 @@ func (this *Exchange) Fetch(url interface{}, method interface{}, headers interfa
 		// 	panic(fmt.Sprintf("failed to create request: %v", err))
 		// }
 
-		//set default headers
+		// set default headers
 		defaultHeaders := this.Headers.(map[string]interface{})
 		for key, value := range defaultHeaders {
 			req.Header.Set(key, value.(string))
@@ -199,7 +198,6 @@ func (this *Exchange) Fetch(url interface{}, method interface{}, headers interfa
 }
 
 func (this *Exchange) HandleHttpStatusCode(code interface{}, reason interface{}, url interface{}, method interface{}, body interface{}) {
-
 	codeString := ToString(code)
 	codeinHttpExceptions := SafeValue(this.HttpExceptions, codeString, nil)
 
@@ -208,5 +206,4 @@ func (this *Exchange) HandleHttpStatusCode(code interface{}, reason interface{},
 		functionError := codeinHttpExceptions.(func(...interface{}) error)
 		panic(functionError(errorMessage))
 	}
-
 }
